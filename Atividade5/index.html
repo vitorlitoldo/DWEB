@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade 5</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .caixa {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .caixa { background-color: green; color: white; }
+        h2::before { content: "Verde (Maior que 1920px)"; }
+
+        @media (max-width: 1920px) {
+            .caixa { background-color: yellow; color: black; }
+            h2::before { content: "Amarelo"; }
+        }
+
+        @media (max-width: 1366px) {
+            .caixa { background-color: blue; color: white; }
+            h2::before { content: "Azul"; }
+        }
+
+        @media (max-width: 1080px) {
+            .caixa { background-color: red; color: white; }
+            h2::before { content: "Vermelho"; }
+        }
+
+        @media (max-width: 1024px) {
+            .caixa { background-color: magenta; color: white; }
+            h2::before { content: "Magenta"; }
+        }
+
+        @media (max-width: 768px) {
+            .caixa { background-color: orange; color: white; }
+            h2::before { content: "Laranja"; }
+        }
+
+        @media (max-width: 420px) {
+            .caixa { background-color: #003366; color: white; }
+            h2::before { content: "Azul Escuro"; }
+        }
+    </style>
+</head>
+<body>
+    <div class="caixa">
+        <h2></h2>
+    </div>
+</body>
+</html>
