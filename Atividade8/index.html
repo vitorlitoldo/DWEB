@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pesquisa de Opinião - Filme</title>
+  <style>
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #f0f2f5; display: flex; justify-content: center; padding: 40px 16px; margin: 0; }
+    .card { background: #fff; width: 100%; max-width: 520px; padding: 24px; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+    h2, h3 { margin-top: 0; color: #1a1a1a; }
+    .status { font-size: 14px; font-weight: 600; color: #2563eb; margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: #4b5563; margin-bottom: 6px; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+    .actions { display: flex; gap: 8px; margin-top: 20px; }
+    button { flex: 1; padding: 11px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-submit { background: #2563eb; color: #fff; }
+    .btn-submit:hover { background: #1d4ed8; }
+    .btn-mock { background: #e5e7eb; color: #374151; }
+    .btn-mock:hover { background: #d1d5db; }
+    .result-box { display: none; margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 18px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .item { background: #f9fafb; padding: 10px; border-radius: 6px; border: 1px solid #e5e7eb; font-size: 13px; }
+    .item strong { display: block; color: #111827; font-size: 15px; margin-top: 2px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Pesquisa do Filme</h2>
+    <div id="progresso" class="status">Participante 1 de 45</div>
+
+    <form id="form-pesquisa">
+      <div class="form-group">
+        <label for="idade">Idade</label>
+        <input type="number" id="idade" min="1" max="120" required>
+      </div>
+
+      <div class="form-group">
+        <label for="sexo">Sexo</label>
+        <select id="sexo" required>
+          <option value="" disabled selected>Selecione</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+          <option value="outros">Outros</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="opiniao">Opinião sobre o filme</label>
+        <select id="opiniao" required>
+          <option value="" disabled selected>Selecione</option>
+          <option value="4">Ótimo</option>
+          <option value="3">Bom</option>
+          <option value="2">Regular</option>
+          <option value="1">Péssimo</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-submit">Registrar Resposta</button>
+        <button type="button" id="btn-preencher-todos" class="btn-mock">Simular 45 Dados</button>
+      </div>
+    </form>
+
+    <div id="resultado" class="result-box">
+      <h3>Resultados Consolidados</h3>
+      <div class="grid">
+        <div class="item">Média de idade: <strong id="res-media">-</strong></div>
+        <div class="item">Mais velho: <strong id="res-velho">-</strong></div>
+        <div class="item">Mais novo: <strong id="res-novo">-</strong></div>
+        <div class="item">Respostas "Péssimo": <strong id="res-pessimo">-</strong></div>
+        <div class="item">Ótimo e Bom (%): <strong id="res-otimo-bom">-</strong></div>
+        <div class="item">Total Mulheres: <strong id="res-mulheres">-</strong></div>
+        <div class="item">Total Homens: <strong id="res-homens">-</strong></div>
+        <div class="item">Total Outros: <strong id="res-outros">-</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL_PESSOAS = 45;
+    const respostas = [];
+
+    const form = document.getElementById('form-pesquisa');
+    const inputIdade = document.getElementById('idade');
+    const selectSexo = document.getElementById('sexo');
+    const selectOpiniao = document.getElementById('opiniao');
+    const labelProgresso = document.getElementById('progresso');
+    const boxResultado = document.getElementById('resultado');
+    const btnPreencherTodos = document.getElementById('btn-preencher-todos');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      respostas.push({
+        idade: parseInt(inputIdade.value, 10),
+        sexo: selectSexo.value,
+        opiniao: parseInt(selectOpiniao.value, 10)
+      });
+
+      form.reset();
+
+      if (respostas.length < TOTAL_PESSOAS) {
+        labelProgresso.textContent = `Participante ${respostas.length + 1} de ${TOTAL_PESSOAS}`;
+        inputIdade.focus();
+      } else {
+        finalizarPesquisa();
+      }
+    });
+
+    btnPreencherTodos.addEventListener('click', () => {
+      const sexos = ['feminino', 'masculino', 'outros'];
+      const opinioes = [1, 2, 3, 4];
+
+      while (respostas.length < TOTAL_PESSOAS) {
+        respostas.push({
+          idade: Math.floor(Math.random() * 60) + 15,
+          sexo: sexos[Math.floor(Math.random() * sexos.length)],
+          opiniao: opinioes[Math.floor(Math.random() * opinioes.length)]
+        });
+      }
+      finalizarPesquisa();
+    });
+
+    function finalizarPesquisa() {
+      form.style.display = 'none';
+      labelProgresso.textContent = `Pesquisa concluída (${TOTAL_PESSOAS} respostas computadas).`;
+
+      let somaIdades = 0;
+      let maisVelho = -Infinity;
+      let maisNovo = Infinity;
+      let qtdPessimo = 0;
+      let qtdOtimoBom = 0;
+      let mulheres = 0;
+      let homens = 0;
+      let outros = 0;
+
+      respostas.forEach(p => {
+        somaIdades += p.idade;
+
+        if (p.idade > maisVelho) maisVelho = p.idade;
+        if (p.idade < maisNovo) maisNovo = p.idade;
+
+        if (p.opiniao === 1) qtdPessimo++;
+        if (p.opiniao === 3 || p.opiniao === 4) qtdOtimoBom++;
+
+        if (p.sexo === 'feminino') mulheres++;
+        else if (p.sexo === 'masculino') homens++;
+        else outros++;
+      });
+
+      const mediaIdades = (somaIdades / TOTAL_PESSOAS).toFixed(1);
+      const percOtimoBom = ((qtdOtimoBom / TOTAL_PESSOAS) * 100).toFixed(1);
+
+      document.getElementById('res-media').textContent = `${mediaIdades} anos`;
+      document.getElementById('res-velho').textContent = `${maisVelho} anos`;
+      document.getElementById('res-novo').textContent = `${maisNovo} anos`;
+      document.getElementById('res-pessimo').textContent = qtdPessimo;
+      document.getElementById('res-otimo-bom').textContent = `${percOtimoBom}%`;
+      document.getElementById('res-mulheres').textContent = mulheres;
+      document.getElementById('res-homens').textContent = homens;
+      document.getElementById('res-outros').textContent = outros;
+
+      boxResultado.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
