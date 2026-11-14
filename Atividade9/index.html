@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Atividade 9</title>
+</head>
+<body>
+
+    <p>1) Maior numero:</p>
+    <input id="n1"> <input id="n2"> <input id="n3">
+    <button onclick="res1.innerText = maior(Number(n1.value), Number(n2.value), Number(n3.value))">Ok</button>
+    <span id="res1"></span>
+
+    <p>2) Ordem crescente:</p>
+    <input id="o1"> <input id="o2"> <input id="o3">
+    <button onclick="res2.innerText = ordenar(Number(o1.value), Number(o2.value), Number(o3.value))">Ok</button>
+    <span id="res2"></span>
+
+    <p>3) Palindromo:</p>
+    <input id="txt">
+    <button onclick="res3.innerText = palindromo(txt.value)">Ok</button>
+    <span id="res3"></span>
+
+    <p>4) Subconjunto:</p>
+    <input id="p1"> <input id="p2">
+    <button onclick="res4.innerText = subconjunto(p1.value, p2.value)">Ok</button>
+    <span id="res4"></span>
+
+    <p>5) Dia da semana:</p>
+    <input type="date" id="dt">
+    <button onclick="res5.innerText = diaSemana(dt.value)">Ok</button>
+    <span id="res5"></span>
+
+    <script src="script.js"></script>
+</body>
+</html>
